@@ -1,10 +1,16 @@
 include(vcpkg_common_functions)
 
-vcpkg_from_github(
+set(VCPKG_BUILD_TYPE release)
 
+@[if git_source == 'gitlab']@
+vcpkg_from_gitlab(
+@[elif git_source == 'github']@
+vcpkg_from_github(
+@[elif git_source == 'bitbucket']@
+vcpkg_from_bitbucket(@[end if]
     OUT_SOURCE_PATH SOURCE_PATH
-    REPO gsoc-bloom-windows/ament_package-release
-    REF vcpkg/ros-dashing-ament-package_0.7.0-1_10
+    REPO @(user_name)/@(repo_name)
+    REF @(tag_name)
 )
 
 find_program(PYTHON "python")
@@ -22,7 +28,5 @@ if (PYTHON)
     install(CODE "execute_process(COMMAND ${PYTHON} ${SETUP_PY} install)")
 endif()
 
-file(INSTALL ${SOURCE_PATH}/license.txt DESTINATION ${CURRENT_PACKAGES_DIR}/share/ros-dashing-ament-package RENAME copyright)
-file(INSTALL ${SOURCE_PATH}/include/ros-dashing-ament-package_for_vcpkg.h DESTINATION ${CURRENT_PACKAGES_DIR}/include)
-
-file(REMOVE_RECURSE ${CURRENT_PACKAGES_DIR}/debug/share)
+file(INSTALL ${SOURCE_PATH}/license.txt DESTINATION ${CURRENT_PACKAGES_DIR}/share/@(Package) RENAME copyright)
+file(INSTALL ${SOURCE_PATH}/include/@(Package)_for_vcpkg.h DESTINATION ${CURRENT_PACKAGES_DIR}/include)
