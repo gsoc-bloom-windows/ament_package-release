@@ -2,16 +2,10 @@ include(vcpkg_common_functions)
 
 set(VCPKG_BUILD_TYPE release)
 
-@[if GitSource == 'gitlab']@
-vcpkg_from_gitlab(
-@[elif GitSource == 'github']@
 vcpkg_from_github(
-@[elif GitSource == 'bitbucket']@
-vcpkg_from_bitbucket(
-@[end if]@
     OUT_SOURCE_PATH SOURCE_PATH
-    REPO @(UserName)/@(RepoName)
-    REF @(TagName)
+    REPO gsoc-bloom-windows/ament_package-release
+    REF vcpkg/ros-dashing-ament-package_0.7.0-11_10
 )
 
 find_package(PythonInterp 3)
